@@ -70,7 +70,6 @@ Some suggested features that your ORM can provide are:
    jdbcUrl=jdbc:h2:tcp://localhost/~/test
    username=sa
    password=
-   
 4. Create a new EntityManager object and pass the constructor your file path
     - the EntityManager will act as your custom profile for that properties file
     - it contains all of the connection/thread pooling
