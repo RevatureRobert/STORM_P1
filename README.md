@@ -64,13 +64,7 @@ Some suggested features that your ORM can provide are:
             <version>6.0.0.Alpha6</version>
         </dependency>
      </dependencies>
-       
-2. Flag entities you want to manage with the **@Entity** annotation.
-   - Managed Entities must be POJO objects
-   - Entity Constructors must use Object/Wrapper types
-   - You can set the desired schema in **@Entity(schema = "schemaName")**
-   - You can flag a primary integer id with the **@Id** annotation
-3. Create a .properties file with the following basic options to configure your connection provider
+2. Create a .properties file with the following basic options to configure your connection provider
    - **jdbcUrl**=*url*
    - **username**=*username*
    - **password**=*password*
@@ -79,6 +73,11 @@ Some suggested features that your ORM can provide are:
    jdbcUrl=jdbc:h2:tcp://localhost/~/test
    username=sa
    password=
+3. Flag entities you want to manage with the **@Entity** annotation.
+   - Managed Entities must be POJO objects
+   - Entity Constructors must use Object/Wrapper types
+   - You can set the desired schema in **@Entity(schema = "schemaName")**
+   - You can flag a primary integer id with the **@Id** annotation
 4. Create a new EntityManager object and pass the constructor your file path
    - the EntityManager will act as your custom profile for that properties file
    - it contains all of the connection/thread pooling
