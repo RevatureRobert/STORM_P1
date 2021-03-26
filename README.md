@@ -45,17 +45,26 @@ Some suggested features that your ORM can provide are:
 
 ## Features
 - Automatic connection/thread pooling built into the entity manager
-- Simple and quick five-step configuration to begin mapping entities and making calls
-- Transaction based sql abstracted away from the user
+- Simple and quick five-step configuration to begin persisting entities
+- Transaction based sql queries abstracted away from the user
+- Build on top of Hibernate and HikariCP interfaces for ease of portability
 
 ## Instructions
-1. Package/install the jar and add the following maven dependency
+1. Package/install the jar and add the following maven dependencies
    ```
-    <dependency>
-        <groupId>org.storm</groupId>
-        <artifactId>STORM</artifactId>
-        <version>0.1</version>
-    </dependency>
+    <dependencies>
+       <dependency>
+           <groupId>org.storm</groupId>
+           <artifactId>STORM</artifactId>
+           <version>0.1</version>
+       </dependency>
+       <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.0.0.Alpha6</version>
+        </dependency>
+     </dependencies>
+       
 2. Flag entities you want to manage with the **@Entity** annotation.
     - Managed Entities must be POJO objects
     - Entity Constructors must use Object/Wrapper types
