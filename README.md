@@ -35,8 +35,8 @@ Some suggested features that your ORM can provide are:
 # STORM
 ### Take Your Next Project By STORM
 
-> * Systemic
-> * Transactional
+> * Sensible
+> * Transaction-based
 > * Object
 > * Relational
 > * Mapping
@@ -80,8 +80,8 @@ Some suggested features that your ORM can provide are:
    - You can flag a primary integer id with the **@Id** annotation
 4. Create a new EntityManager object and pass the constructor your file path
    - the EntityManager will act as your custom profile for that properties file
-   - it contains all of the connection/thread pooling
-   - it will handle all of the mapping/caching for you
+   - it contains all the connection/thread pooling
+   - it will handle all the mapping/caching for you
 5. Begin persisting objects
    - calling **entityManager.persist(Object)** will begin managing the object for you
    - it will create the table if it does not already exist and add the object to the persistence context

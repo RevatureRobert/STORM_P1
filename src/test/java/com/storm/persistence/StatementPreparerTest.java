@@ -11,4 +11,11 @@ public class StatementPreparerTest {
         TestClass1 tc1 = new TestClass1(1,"Brandon");
         System.out.println(sp.prepareSql(tc1,QueryType.CREATE));
     }
+
+    @Test
+    public void prepareUpdateSQL(){
+        StatementPreparer sp = new StatementPreparer();
+        TestClass1 tc1 = new TestClass1(1,"Brandon");
+        System.out.println(sp.prepareSql(tc1,QueryType.UPDATE));
+    }
 }

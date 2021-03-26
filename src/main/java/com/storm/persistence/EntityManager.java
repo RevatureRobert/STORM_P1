@@ -10,17 +10,17 @@ import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import java.io.IOException;
 import java.sql.Connection;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 
 public class EntityManager implements javax.persistence.EntityManager {
 
-
-
     StormConnectionProvider connectionProvider = new StormConnectionProvider();
+    ExecutorService executorService = Executors.newFixedThreadPool(5);
 
     Database context;
-
     PersistenceManager persistenceManager;
-
     ContextManager contextManager;
     CacheManager cacheManager;
 
@@ -56,8 +56,15 @@ public class EntityManager implements javax.persistence.EntityManager {
         Connection activeConnection = null;
         try{
             activeConnection = connectionProvider.getConnection();
-            persistenceManager.persist(o, activeConnection);
-            contextManager.addEntityToContext(o);
+            Connection finalActiveConnection = activeConnection;
+            executorService.execute(() -> {
+                try {
+                    persistenceManager.persist(o, finalActiveConnection);
+                    contextManager.addEntityToContext(o);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         } finally{
@@ -70,6 +77,19 @@ public class EntityManager implements javax.persistence.EntityManager {
     // Merge the state of the given entity into the current persistence context
     @Override
     public <T> T merge(T t) {
+        Connection activeConnection = null;
+        try{
+            activeConnection = connectionProvider.getConnection();
+            Connection finalActiveConnection = activeConnection;
+            Future<Object> future = executorService.submit(() -> persistenceManager.merge(t, finalActiveConnection));
+            return (T) future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            if (activeConnection!= null){
+                connectionProvider.closeConnection(activeConnection);
+            }
+        }
         return null;
     }
 
@@ -79,7 +99,14 @@ public class EntityManager implements javax.persistence.EntityManager {
         Connection activeConnection = null;
         try{
             activeConnection = connectionProvider.getConnection();
-            persistenceManager.remove(o, activeConnection);
+            Connection finalActiveConnection = activeConnection;
+            executorService.execute(() -> {
+                try {
+                    persistenceManager.remove(o, finalActiveConnection);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            });
         } catch (Exception e) {
             e.printStackTrace();
         } finally{
@@ -93,9 +120,11 @@ public class EntityManager implements javax.persistence.EntityManager {
     @Override
     public <T> T find(Class<T> aClass, Object o) {
         Connection activeConnection = null;
-        try {
+        try{
             activeConnection = connectionProvider.getConnection();
-            return (T) persistenceManager.find(o, activeConnection);
+            Connection finalActiveConnection = activeConnection;
+            Future<Object> future = executorService.submit(() -> persistenceManager.find(o, finalActiveConnection));
+            return (T) future.get();
         } catch (Exception e) {
             e.printStackTrace();
         } finally{
@@ -109,78 +138,91 @@ public class EntityManager implements javax.persistence.EntityManager {
     // Returns an instance which is lazily fetched
     @Override
     public <T> T getReference(Class<T> aClass, Object o) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     // Synchronizes the persistence context with the database
     @Override
     public void flush() {
-
+        throw new UnsupportedOperationException();
     }
 
 
     @Override
-    public void setFlushMode(FlushModeType flushModeType) { }
+    public void setFlushMode(FlushModeType flushModeType) {
+        throw new UnsupportedOperationException();
+    }
 
     @Override
     public FlushModeType getFlushMode() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     // Lock an entity instance that is contained in the context
     @Override
     public void lock(Object o, LockModeType lockModeType) {
-
+        throw new UnsupportedOperationException();
     }
 
     // Refresh the state of the instance from the database
     @Override
     public void refresh(Object o) {
-
+        throw new UnsupportedOperationException();
     }
 
     // Clear the persistence context causing all managed entities to become detached
     @Override
     public void clear() {
-
+        throw new UnsupportedOperationException();
     }
 
     // Checks if the managed entity belongs to the current persistence context
     @Override
     public boolean contains(Object o) {
-        // TODO: what should we check here?
-        // if the entity is in the context || cache || persistence
-        return contextManager.contains(o);
+        Connection activeConnection = null;
+        try{
+            activeConnection = connectionProvider.getConnection();
+            Connection finalActiveConnection = activeConnection;
+            Future<Boolean> future = executorService.submit(() -> persistenceManager.contains(o, finalActiveConnection));
+            return future.get();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally{
+            if (activeConnection!= null){
+                connectionProvider.closeConnection(activeConnection);
+            }
+        }
+        return false;
     }
 
 
     // Create an instance of Query for executing a Java Persistence query language statement
     @Override
     public Query createQuery(String s) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 
     // Create an instance of Query for executing a Java Persistence named query language statement
     @Override
     public Query createNamedQuery(String s) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     // Create an instance of Query for executing a native sql statement.
     @Override
     public Query createNativeQuery(String s) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Query createNativeQuery(String s, Class aClass) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     public Query createNativeQuery(String s, String s1) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 
@@ -189,32 +231,32 @@ public class EntityManager implements javax.persistence.EntityManager {
     // created outside the scope of the active transaction to associate it with the current JTA transaction.
     @Override
     public void joinTransaction() {
-
+        throw new UnsupportedOperationException();
     }
 
     // return the provider object for the entityManager.
     @Override
     public Object getDelegate() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
 
     // close an application-managed entityManager.
     @Override
     public void close() {
-
+        throw new UnsupportedOperationException();
     }
 
     // determine if the entityManager is open.
     @Override
     public boolean isOpen() {
-        return false;
+        throw new UnsupportedOperationException();
     }
 
 
     // Return the resource-level EntityTransaction object.
     @Override
     public EntityTransaction getTransaction() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 }

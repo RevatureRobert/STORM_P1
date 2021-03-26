@@ -71,6 +71,29 @@ public class PersistenceManager {
         return null;
     }
 
+    public Object merge(Object o, Connection conn) throws Exception{
+        String sql;
+        PreparedStatement stmt;
+        int success = 0;
+
+        if(!contains(o, conn)) throw new StormException("This object is not in the persistence context.");
+
+        conn.setAutoCommit(false);
+        Savepoint savepoint = conn.setSavepoint();
+
+        sql = statementPreparer.prepareSql(o, QueryType.UPDATE);
+        stmt = statementPreparer.prepareStatement(o, conn, sql, QueryType.UPDATE);
+        success = stmt.executeUpdate();
+
+        if(success == 0){
+            conn.rollback(savepoint);
+            throw new StormException("Could not add the desired entity: " + o);
+        }
+
+        conn.commit();
+        return o;
+    }
+
     public void remove(Object o, Connection conn) throws Exception {
         String sql;
         PreparedStatement stmt;
@@ -88,7 +111,7 @@ public class PersistenceManager {
 
         if(success == 0){
             conn.rollback(savepoint);
-            throw new Exception("Could not removed the desired entity: " + o);
+            throw new StormException("Could not remove the desired entity: " + o);
         }
 
         conn.commit();
