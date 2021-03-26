@@ -9,4 +9,5 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Id {
     boolean isPrimary() default true;
+    boolean isSerial() default false;
 }

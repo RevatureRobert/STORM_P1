@@ -26,9 +26,6 @@ public class ContextManagerTest {
         Set<Table> tables = Objects.requireNonNull(schemas.stream().findFirst().orElse(null)).getTables();
         assertEquals(1, tables.size());
         Set<Column> columns = Objects.requireNonNull(tables.stream().findFirst().orElse(null)).getColumns();
-        //TODO: figure out why this assertion doesn't work with 2 as the expected
-
-        System.out.println(columns);
         assertEquals(2, columns.size());
     }
     @Test

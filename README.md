@@ -32,53 +32,61 @@ Some suggested features that your ORM can provide are:
 
 
 
-#STORM
-###Take Your Next Project By STORM
+# STORM
+### Take Your Next Project By STORM
 
-> * Systemic  
-> * Transactional  
-> * Object  
-> * Relational  
+> * Systemic
+> * Transactional
+> * Object
+> * Relational
 > * Mapping
 
 
 
 ## Features
 - Automatic connection/thread pooling built into the entity manager
-- Simple and quick five-step configuration to begin mapping entities and making calls
-- Transaction based sql abstracted away from the user
+- Simple and quick five-step configuration to begin persisting entities
+- Transaction based sql queries abstracted away from the user
+- Build on top of Hibernate and HikariCP interfaces for ease of portability
 
 ## Instructions
-1. Package/install the jar and add the following maven dependency
+1. Package/install the jar and add the following maven dependencies
    ```
-    <dependency>
-        <groupId>org.storm</groupId>
-        <artifactId>STORM</artifactId>
-        <version>0.1</version>
-    </dependency>
+    <dependencies>
+       <dependency>
+           <groupId>org.storm</groupId>
+           <artifactId>STORM</artifactId>
+           <version>0.1</version>
+       </dependency>
+       <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-core</artifactId>
+            <version>6.0.0.Alpha6</version>
+        </dependency>
+     </dependencies>
+       
 2. Flag entities you want to manage with the **@Entity** annotation.
-    - Managed Entities must be POJO objects
-    - Entity Constructors must use Object/Wrapper types
-    - You can set the desired schema in **@Entity(schema = "schemaName")**
-    - You can flag a primary integer id with the **@Id** annotation
+   - Managed Entities must be POJO objects
+   - Entity Constructors must use Object/Wrapper types
+   - You can set the desired schema in **@Entity(schema = "schemaName")**
+   - You can flag a primary integer id with the **@Id** annotation
 3. Create a .properties file with the following basic options to configure your connection provider
-    - **jdbcUrl**=*url*
-    - **username**=*username*
-    - **password**=*password*
+   - **jdbcUrl**=*url*
+   - **username**=*username*
+   - **password**=*password*
     ```
    #Example h2.properties file
    jdbcUrl=jdbc:h2:tcp://localhost/~/test
    username=sa
    password=
-   
 4. Create a new EntityManager object and pass the constructor your file path
-    - the EntityManager will act as your custom profile for that properties file
-    - it contains all of the connection/thread pooling
-    - it will handle all of the mapping/caching for you
+   - the EntityManager will act as your custom profile for that properties file
+   - it contains all of the connection/thread pooling
+   - it will handle all of the mapping/caching for you
 5. Begin persisting objects
-    - calling **entityManager.persist(Object)** will begin managing the object for you
-    - it will create the table if it does not already exist and add the object to the persistence context
-    - for full documentation and guidelines, check the javaDoc
+   - calling **entityManager.persist(Object)** will begin managing the object for you
+   - it will create the table if it does not already exist and add the object to the persistence context
+   - for full documentation and guidelines, check the javaDoc
 
 
 ## Init Instructions

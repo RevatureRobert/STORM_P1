@@ -6,6 +6,7 @@ import com.storm.annotations.NotNullable;
 
 @Entity
 public class TestClass1 {
+    @Id(isPrimary = false)
     int id;
     String notNullable;
 

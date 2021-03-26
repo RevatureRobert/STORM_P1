@@ -25,8 +25,6 @@ public class StormConfig {
     private boolean sealed;
 
     public StormConfig(){
-        // default constructor will attempt to load properties manually from the "h2.properties" file
-        dataSourceProperties = loadProperties();
     }
 
     public StormConfig(Properties properties){

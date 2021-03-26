@@ -9,6 +9,7 @@ import javax.persistence.FlushModeType;
 import javax.persistence.LockModeType;
 import javax.persistence.Query;
 import java.io.IOException;
+import java.sql.Connection;
 
 public class EntityManager implements javax.persistence.EntityManager {
 
@@ -52,11 +53,17 @@ public class EntityManager implements javax.persistence.EntityManager {
     // Make an instance managed and persistent
     @Override
     public void persist(Object o) {
-        try {
-            persistenceManager.persist(o, connectionProvider.getConnection());
+        Connection activeConnection = null;
+        try{
+            activeConnection = connectionProvider.getConnection();
+            persistenceManager.persist(o, activeConnection);
             contextManager.addEntityToContext(o);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally{
+            if (activeConnection!= null){
+                connectionProvider.closeConnection(activeConnection);
+            }
         }
     }
 
@@ -69,20 +76,32 @@ public class EntityManager implements javax.persistence.EntityManager {
     // Remove the entity instance
     @Override
     public void remove(Object o) {
+        Connection activeConnection = null;
         try{
-            persistenceManager.remove(o, connectionProvider.getConnection());
+            activeConnection = connectionProvider.getConnection();
+            persistenceManager.remove(o, activeConnection);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally{
+            if (activeConnection!= null){
+                connectionProvider.closeConnection(activeConnection);
+            }
         }
     }
 
     // Find by primary key
     @Override
     public <T> T find(Class<T> aClass, Object o) {
+        Connection activeConnection = null;
         try {
-            return (T) persistenceManager.find(o, connectionProvider.getConnection());
+            activeConnection = connectionProvider.getConnection();
+            return (T) persistenceManager.find(o, activeConnection);
         } catch (Exception e) {
             e.printStackTrace();
+        } finally{
+            if (activeConnection!= null){
+                connectionProvider.closeConnection(activeConnection);
+            }
         }
         return null;
     }

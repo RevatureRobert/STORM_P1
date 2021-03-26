@@ -139,11 +139,10 @@ public class StatementPreparer<T> {
         StringBuilder constraints = new StringBuilder(", primary key(\"");
         Field[] fields = t.getClass().getDeclaredFields();
 
-        for(int i = 0; i< fields.length; i++){
-            if(fields[i].getDeclaredAnnotation(Id.class) != null){
-                return constraints.append(fields[i].getName()).append("\")").toString();
-            }
-        }
+        for (Field field : fields)
+            if (field.getDeclaredAnnotation(Id.class) != null)
+                if (field.getDeclaredAnnotation(Id.class).isPrimary())
+                    return constraints.append(field.getName()).append("\")").toString();
         return "";
     }
 

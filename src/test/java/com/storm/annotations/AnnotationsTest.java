@@ -35,12 +35,12 @@ public class AnnotationsTest {
     public void idTest() throws NoSuchFieldException {
         TestClass1 tc = new TestClass1(1, "value");
         boolean actual = tc.getClass().getDeclaredField("id").getDeclaredAnnotation(Id.class).isPrimary();
-        assertTrue(actual);
+        assertFalse(actual);
     }
 
     @Test
     public void notNullableTest() throws NoSuchFieldException {
-        TestClass1 tc = new TestClass1(1, "value");
+        TestClass2 tc = new TestClass2(1, "value");
         boolean actual = tc.getClass().getDeclaredField("notNullable").getDeclaredAnnotation(NotNullable.class).isNullable();
         assertFalse(actual);
     }

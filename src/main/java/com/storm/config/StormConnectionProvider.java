@@ -42,7 +42,7 @@ public class StormConnectionProvider implements ConnectionProvider, Configurable
     }
 
     @Override
-    public void closeConnection(Connection connection) throws SQLException {
+    public void closeConnection(Connection connection){
         sds.getConnectionPool()[locationIndex] = connection;
         activeConnection = null;
         locationIndex = -1;

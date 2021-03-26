@@ -2,6 +2,7 @@ package com.storm.persistence;
 
 
 
+import com.storm.exception.StormException;
 import com.storm.util.TypeConversionUtil;
 
 import java.lang.reflect.Constructor;
@@ -24,6 +25,9 @@ public class PersistenceManager {
 
         // if a table does not already exist for the entity
         createTable(o, conn);
+
+        // check if the object is already persisted
+        if(contains(o, conn)) throw new StormException("The primary key is already reserved");
 
         conn.setAutoCommit(false);
         Savepoint savepoint = conn.setSavepoint();
@@ -88,6 +92,18 @@ public class PersistenceManager {
         }
 
         conn.commit();
+    }
+
+    public boolean contains(Object o, Connection conn) throws Exception {
+        String sql;
+        PreparedStatement stmt;
+
+        sql = statementPreparer.prepareSql(o, QueryType.SELECT);
+        stmt = statementPreparer.prepareStatement(o, conn, sql, QueryType.SELECT);
+        ResultSet rs = stmt.executeQuery();
+
+        if(rs.next()) return true;
+        return false;
     }
 
     private void createTable(Object o, Connection conn) throws IllegalAccessException, SQLException, NoSuchFieldException {
