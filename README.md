@@ -87,6 +87,22 @@ Some suggested features that your ORM can provide are:
    - it will create the table if it does not already exist and add the object to the persistence context
    - for full documentation and guidelines, check the javaDoc
 
+## Project Roadmap
+- Version
+   - [x] 0.1 - **Minimum Viable Product** : *Released - 03/25/2021*
+      - Users can persist, retrieve, update and delete simple POJO objects via the EntityManager
+      - Users can generate their own prepared statements/queries for any object with the loosely coupled StatementPreparer
+      - Automated but non-configurable connection/thread pooling
+   - [ ] 0.2 - **Caching** : *Projected Release - 03/29/2021*
+      - Users will notice increased performance thanks to the caching of objects in an in memory persistence context.
+   - [ ] 0.3 - **Enhanced Configuration Options** : *Projected Release - 03/29/2021*
+      - Users will be able to add their desired thread and connection pool size in their .properties file
+   - [ ] 0.4 - **Relationships and Complex Objects** : *Projected Release - 04/02/2021*
+      - Users will be able to persist objects that have relationships or complex nested objects such as lists.
+   - [ ] 0.5 - **Schema Customization** : *Projected Release - 04/04/2021*
+      - Users will now be able to utilize multiple schemas in the same persistence context
+      - The @Entity annotation will allow for the schema name of the entity
+   
 
 ## Init Instructions
 - Create a new repository within this organization (naming convention: `orm_name_p1`; with `orm_name` being replaced by the name of your custom library)

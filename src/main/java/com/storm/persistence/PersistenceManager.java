@@ -27,7 +27,7 @@ public class PersistenceManager {
         createTable(o, conn);
 
         // check if the object is already persisted
-        if(contains(o, conn)) throw new StormException("The primary key is already reserved");
+        if(contains(o, conn)) throw new StormException("The primary key is already reserved" + o);
 
         conn.setAutoCommit(false);
         Savepoint savepoint = conn.setSavepoint();
