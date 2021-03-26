@@ -47,7 +47,7 @@ Some suggested features that your ORM can provide are:
 - Automatic connection/thread pooling built into the entity manager
 - Simple and quick five-step configuration to begin persisting entities
 - Transaction based sql queries abstracted away from the user
-- Build on top of Hibernate and HikariCP interfaces for ease of portability
+- Build on top of Hibernate and JPA interfaces for ease of portability
 
 ## Instructions
 1. Package/install the jar and add the following maven dependencies
